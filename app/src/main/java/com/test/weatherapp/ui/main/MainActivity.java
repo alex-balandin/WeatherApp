@@ -16,6 +16,7 @@ import com.test.weatherapp.R;
 import com.test.weatherapp.application.WeatherApplication;
 import com.test.weatherapp.model.CityWeather;
 import com.test.weatherapp.ui.addcity.AddCityActivity;
+import com.test.weatherapp.ui.details.WeatherDetailsActivity;
 import com.test.weatherapp.ui.main.di.MainModule;
 
 import java.util.List;
@@ -104,8 +105,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showWeatherDetailsScreen() {
-
+    public void showWeatherDetailsScreen(int cityId) {
+        Intent intent = WeatherDetailsActivity.getStartIntent(this, cityId);
+        startActivity(intent);
     }
 
     @Override

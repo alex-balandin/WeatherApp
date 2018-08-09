@@ -35,12 +35,24 @@ public class CityWeather {
     public CityWeather(CurrentWeatherResponse serverResponse, long timestamp) {
         this.cityId = serverResponse.getId();
         this.cityName = serverResponse.getName();
-        this.weatherDescription = serverResponse.getWeather().get(0).getDescription();
-        this.tempCelsius = serverResponse.getMain().getTemp();
-        this.pressure = serverResponse.getMain().getPressure();
-        this.humidityPercents = serverResponse.getMain().getHumidity();
-        this.windSpeed = serverResponse.getWind().getSpeed();
-        this.windDegree = serverResponse.getWind().getDeg();
+        this.weatherDescription = serverResponse.getWeather().get(0).getDescription() != null
+                ? serverResponse.getWeather().get(0).getDescription()
+                : "";
+        this.tempCelsius = serverResponse.getMain().getTemp() != null
+                ? serverResponse.getMain().getTemp()
+                : 0;
+        this.pressure = serverResponse.getMain().getPressure() != null
+                ? serverResponse.getMain().getPressure()
+                : 0;
+        this.humidityPercents = serverResponse.getMain().getHumidity() != null
+                ? serverResponse.getMain().getHumidity()
+                : 0;
+        this.windSpeed = serverResponse.getWind().getSpeed() != null
+                ? serverResponse.getWind().getSpeed()
+                : 0;
+        this.windDegree = serverResponse.getWind().getDeg() != null
+                ? serverResponse.getWind().getDeg()
+                : 0;
         this.timestamp = timestamp;
     }
 
@@ -83,15 +95,15 @@ public class CityWeather {
     @Override
     public String toString() {
         return "CityWeather{" +
-                "cityId=" + cityId +
-                ", cityName='" + cityName + '\'' +
-                ", weatherDescription='" + weatherDescription + '\'' +
-                ", tempCelsius=" + tempCelsius +
-                ", pressure=" + pressure +
-                ", humidityPercents=" + humidityPercents +
-                ", windSpeed=" + windSpeed +
-                ", windDegree=" + windDegree +
-                ", timestamp=" + timestamp +
-                '}';
+                "\ncityId=" + cityId +
+                "\n, cityName='" + cityName + '\'' +
+                "\n, weatherDescription='" + weatherDescription + '\'' +
+                "\n, tempCelsius=" + tempCelsius +
+                "\n, pressure=" + pressure +
+                "\n, humidityPercents=" + humidityPercents +
+                "\n, windSpeed=" + windSpeed +
+                "\n, windDegree=" + windDegree +
+                "\n, timestamp=" + timestamp +
+                "\n}";
     }
 }

@@ -14,7 +14,7 @@ public interface MainContract {
         void setCitiesWeatherData(List<CityWeather> data);
 
         void showAddCityScreen();
-        void showWeatherDetailsScreen();
+        void showWeatherDetailsScreen(int cityId);
 
         void showProgressBar();
         void hideProgressBar();

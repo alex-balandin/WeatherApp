@@ -13,16 +13,16 @@ import dagger.Provides;
 @Module
 public class AddCityModule {
 
-    private AddCityContract.View mainView;
+    private AddCityContract.View view;
 
     public AddCityModule(AddCityContract.View mainView) {
-        this.mainView = mainView;
+        this.view = mainView;
     }
 
     @Provides
     @ActivityScope
     AddCityContract.View provideAddCityView() {
-        return mainView;
+        return view;
     }
 
     @Provides

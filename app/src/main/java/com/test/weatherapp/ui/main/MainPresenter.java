@@ -92,8 +92,11 @@ public class MainPresenter implements MainContract.Presenter {
                     if (view != null) {
                         view.hideProgressBar();
                         view.finishRefresh();
-                        if (throwable instanceof NetworkException && isShowNetworkErrorMessage) {
-                            view.showNetworkErrorMessage();
+                        if (throwable instanceof NetworkException) {
+                            if (isShowNetworkErrorMessage) {
+                                view.showNetworkErrorMessage();
+                            }
+                            fetchCitiesWeatherFromCache();
                         } else {
                             view.showGeneralErrorMessage();
                         }
@@ -123,7 +126,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onCityWeatherClicked(int cityId) {
-        view.showWeatherDetailsScreen();
+        view.showWeatherDetailsScreen(cityId);
     }
 
     @SuppressLint("CheckResult")
@@ -154,6 +157,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onSwipeToRefresh() {
-        fetchCitiesWeather(false,  true);
+        fetchCitiesWeather(true,  true);
     }
 }
