@@ -101,14 +101,45 @@ public class MainPresenter implements MainContract.Presenter {
                 });
     }
 
-    @Override
-    public void onCityWeatherClicked(int cityId) {
+    @SuppressLint("CheckResult")
+    private void fetchCitiesWeatherFromCache() {
+        weatherDataManager.getAllCitiesWeatherCached()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(cityWeathers -> {
+                    Logging.d(LOG_TAG, "getAllCitiesWeatherCached success");
 
+                    if (view != null) {
+                        view.setCitiesWeatherData(cityWeathers);
+                    }
+
+                }, throwable -> {
+                    Logging.d(LOG_TAG, "getAllCitiesWeatherCached failed: " + throwable);
+                    if (view != null) {
+                        view.showGeneralErrorMessage();
+                    }
+                });
     }
 
     @Override
-    public void onDeleteClicked(int cityId) {
+    public void onCityWeatherClicked(int cityId) {
+        view.showWeatherDetailsScreen();
+    }
 
+    @SuppressLint("CheckResult")
+    @Override
+    public void onDeleteClicked(int cityId) {
+        weatherDataManager.deleteCityWeatherCache(cityId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    Logging.d(LOG_TAG, "deleteCityWeatherCache success");
+                    fetchCitiesWeatherFromCache();
+                }, throwable -> {
+                    if (view != null) {
+                        view.showGeneralErrorMessage();
+                    }
+                });
     }
 
     @Override
