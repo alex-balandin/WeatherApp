@@ -21,6 +21,8 @@ public class CurrentWeatherService {
 
     private static final int HTTP_CODE_CITY_NOT_FOUND = 404;
 
+    private static final String UNITS = "metric";
+
     private WeatherApi weatherApi;
 
     public CurrentWeatherService(WeatherApi weatherApi) {
@@ -28,7 +30,7 @@ public class CurrentWeatherService {
     }
 
     public Single<CurrentWeatherResponse> getCurrentWeather(String appId, String cityName) {
-        return weatherApi.getCurrentWeather(appId, cityName)
+        return weatherApi.getCurrentWeather(appId, cityName, UNITS)
                 .onErrorResumeNext(this::handleError)
                 .flatMap(this::handleStatusCode);
     }

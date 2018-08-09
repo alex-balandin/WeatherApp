@@ -14,5 +14,6 @@ public interface WeatherApi {
 
     @GET("weather/")
     Single<CurrentWeatherResponse> getCurrentWeather(@Query("appid") String appId,
-                                                     @Query("q") String cityName);
+                                                     @Query("q") String cityName,
+                                                     @Query("units") String units);
 }

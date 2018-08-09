@@ -3,6 +3,7 @@ package com.test.weatherapp.di;
 import com.test.weatherapp.application.WeatherApplication;
 import com.test.weatherapp.data.WeatherDataManager;
 import com.test.weatherapp.data.WeatherDataManagerImpl;
+import com.test.weatherapp.data.db.DbManagerImpl;
 import com.test.weatherapp.data.network.ApiManagerImpl;
 
 import javax.inject.Singleton;
@@ -24,6 +25,8 @@ public class AppModule {
     @Provides
     @Singleton
     protected WeatherDataManager provideWeatherDataManager() {
-        return new WeatherDataManagerImpl(app, new ApiManagerImpl());
+        return new WeatherDataManagerImpl(
+                new ApiManagerImpl(),
+                new DbManagerImpl(app.getApplicationContext()));
     }
 }

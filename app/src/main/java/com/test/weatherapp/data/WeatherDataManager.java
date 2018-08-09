@@ -1,6 +1,6 @@
 package com.test.weatherapp.data;
 
-import com.test.weatherapp.data.network.services.weather.response.CurrentWeatherResponse;
+import com.test.weatherapp.model.CityWeather;
 
 import io.reactivex.Single;
 
@@ -9,5 +9,5 @@ import io.reactivex.Single;
  */
 public interface WeatherDataManager {
 
-    Single<CurrentWeatherResponse> fetchCurrentWeather(String cityName);
+    Single<CityWeather> fetchCurrentWeather(String cityName);
 }

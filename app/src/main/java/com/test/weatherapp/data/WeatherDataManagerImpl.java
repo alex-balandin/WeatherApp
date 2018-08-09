@@ -1,9 +1,8 @@
 package com.test.weatherapp.data;
 
-import android.app.Application;
-
+import com.test.weatherapp.data.db.DbManager;
 import com.test.weatherapp.data.network.ApiManager;
-import com.test.weatherapp.data.network.services.weather.response.CurrentWeatherResponse;
+import com.test.weatherapp.model.CityWeather;
 
 import io.reactivex.Single;
 
@@ -12,16 +11,24 @@ import io.reactivex.Single;
  */
 public class WeatherDataManagerImpl implements WeatherDataManager {
 
-    private Application application;
     private ApiManager apiManager;
+    private DbManager dbManager;
 
-    public WeatherDataManagerImpl(Application application, ApiManager apiManager) {
-        this.application = application;
+    public WeatherDataManagerImpl(ApiManager apiManager, DbManager dbManager) {
         this.apiManager = apiManager;
+        this.dbManager = dbManager;
     }
 
     @Override
-    public Single<CurrentWeatherResponse> fetchCurrentWeather(String cityName) {
-        return apiManager.getCurrentWeather(cityName);
+    public Single<CityWeather> fetchCurrentWeather(String cityName) {
+        return apiManager.getCurrentWeather(cityName)
+                .map(response -> {
+                    long timestamp = System.currentTimeMillis();
+                    CityWeather cityWeather = new CityWeather(response, timestamp);
+
+                    dbManager.saveCityWeather(cityWeather);
+
+                    return cityWeather;
+                });
     }
 }
