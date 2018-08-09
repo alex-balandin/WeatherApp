@@ -1,5 +1,7 @@
 package com.test.weatherapp.ui.main.di;
 
+import android.os.Handler;
+
 import com.test.weatherapp.di.scope.ActivityScope;
 import com.test.weatherapp.ui.main.MainContract;
 import com.test.weatherapp.ui.main.MainPresenter;
@@ -29,5 +31,11 @@ public class MainModule {
     @ActivityScope
     MainContract.Presenter provideMainPresenter(MainPresenter presenter) {
         return presenter;
+    }
+
+    @Provides
+    @ActivityScope
+    Handler provideHandler() {
+        return new Handler();
     }
 }

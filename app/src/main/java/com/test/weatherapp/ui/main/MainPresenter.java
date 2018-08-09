@@ -1,6 +1,7 @@
 package com.test.weatherapp.ui.main;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
 
 import com.test.weatherapp.data.WeatherDataManager;
 import com.test.weatherapp.exceptions.CityNotFoundException;
@@ -24,6 +25,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MainPresenter implements MainContract.Presenter {
 
+    private static final int REFRESH_DATA_DELAY_MS = 1000 * 60;
+
     private static final String LOG_TAG = "MainPresenter";
 
     private static final String DEFAULT_CITY = "Kyiv";
@@ -32,27 +35,36 @@ public class MainPresenter implements MainContract.Presenter {
 
     private WeatherDataManager weatherDataManager;
 
+    private Handler refreshHandler;
+
     @Inject
-    public MainPresenter(WeatherDataManager weatherDataManager) {
+    public MainPresenter(WeatherDataManager weatherDataManager, Handler refreshHandler) {
         this.weatherDataManager = weatherDataManager;
+        this.refreshHandler = refreshHandler;
     }
 
     @Override
     public void attach(MainContract.View view) {
         this.view = view;
-        fetchCitiesWeather(true, false);
+        fetchCitiesWeather(true, true);
+        postDataRefreshDelayed();
     }
 
     @Override
     public void detach() {
         this.view = null;
+        refreshHandler.removeCallbacksAndMessages(null);
     }
 
     @SuppressLint("CheckResult")
-    private void fetchCitiesWeather(boolean isShowNetworkErrorMessage, boolean isSwipeToRefresh) {
-        if (!isSwipeToRefresh) {
+    private void fetchCitiesWeather(boolean isShowNetworkErrorMessage, boolean isShowProgressBar) {
+        refreshHandler.removeCallbacksAndMessages(null);
+        postDataRefreshDelayed();
+
+        if (isShowProgressBar) {
             view.showProgressBar();
         }
+
         weatherDataManager.getAllCitiesWeatherCached()
                 .flatMap(cityWeathers -> {
                     List<Single<CityWeather>> fetchWeatherSingles = new ArrayList<>();
@@ -152,11 +164,17 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onAddCitySuccess() {
-        fetchCitiesWeather(true,  false);
+        fetchCitiesWeather(true,  true);
     }
 
     @Override
     public void onSwipeToRefresh() {
-        fetchCitiesWeather(true,  true);
+        fetchCitiesWeather(true,  false);
+    }
+
+    private void postDataRefreshDelayed() {
+        refreshHandler.postDelayed(() -> {
+            fetchCitiesWeather(false, false);
+        }, REFRESH_DATA_DELAY_MS);
     }
 }
