@@ -12,6 +12,10 @@ public interface MainContract {
 
     interface View {
         void setCitiesWeatherData(List<CityWeather> data);
+
+        void showAddCityScreen();
+        void showWeatherDetailsScreen();
+
         void showProgressBar();
         void hideProgressBar();
         void showNetworkErrorMessage();
@@ -23,6 +27,9 @@ public interface MainContract {
     interface Presenter extends BasePresenter<View> {
         void onCityWeatherClicked(int cityId);
         void onDeleteClicked(int cityId);
+        void onAddButtonClicked();
+
+        void onAddCitySuccess();
 
         void onSwipeToRefresh();
     }

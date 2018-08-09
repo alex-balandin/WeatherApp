@@ -49,7 +49,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @SuppressLint("CheckResult")
-    private void fetchCitiesWeather(boolean isInitial, boolean isSwipeToRefresh) {
+    private void fetchCitiesWeather(boolean isShowNetworkErrorMessage, boolean isSwipeToRefresh) {
         if (!isSwipeToRefresh) {
             view.showProgressBar();
         }
@@ -92,7 +92,7 @@ public class MainPresenter implements MainContract.Presenter {
                     if (view != null) {
                         view.hideProgressBar();
                         view.finishRefresh();
-                        if (throwable instanceof NetworkException && isInitial) {
+                        if (throwable instanceof NetworkException && isShowNetworkErrorMessage) {
                             view.showNetworkErrorMessage();
                         } else {
                             view.showGeneralErrorMessage();
@@ -109,6 +109,16 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void onDeleteClicked(int cityId) {
 
+    }
+
+    @Override
+    public void onAddButtonClicked() {
+        view.showAddCityScreen();
+    }
+
+    @Override
+    public void onAddCitySuccess() {
+        fetchCitiesWeather(true,  false);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.test.weatherapp.ui.main;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import com.test.weatherapp.R;
 import com.test.weatherapp.application.WeatherApplication;
 import com.test.weatherapp.model.CityWeather;
+import com.test.weatherapp.ui.addcity.AddCityActivity;
 import com.test.weatherapp.ui.main.di.MainModule;
 
 import java.util.List;
@@ -20,6 +23,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
+
+    private static final int ADD_CITY_ACTIVITY_REQUEST_CODE = 12345;
 
     @Inject
     MainContract.Presenter presenter;
@@ -39,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Replace with your own action", Toast.LENGTH_SHORT).show();
+                presenter.onAddButtonClicked();
             }
         });
 
@@ -93,6 +98,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void showAddCityScreen() {
+        Intent intent = new Intent(this, AddCityActivity.class);
+        startActivityForResult(intent, ADD_CITY_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    public void showWeatherDetailsScreen() {
+
+    }
+
+    @Override
     public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -117,5 +133,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void finishRefresh() {
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_CITY_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            presenter.onAddCitySuccess();
+        }
     }
 }

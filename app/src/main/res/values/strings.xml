@@ -7,4 +7,7 @@
     <string name="error_message_general_error">Something went wrong, please try again</string>
     <string name="error_message_no_internet_connection">No internet connection</string>
     <string name="error_message_city_not_found">City not found</string>
+
+    <string name="city_name">City name</string>
+    <string name="add">Add</string>
 </resources>

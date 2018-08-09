@@ -1,5 +1,7 @@
 package com.test.weatherapp.di;
 
+import com.test.weatherapp.ui.addcity.di.AddCityComponent;
+import com.test.weatherapp.ui.addcity.di.AddCityModule;
 import com.test.weatherapp.ui.main.di.MainComponent;
 import com.test.weatherapp.ui.main.di.MainModule;
 
@@ -14,4 +16,5 @@ import dagger.Component;
 @Component(modules = {AppModule.class})
 public interface AppComponent {
     MainComponent plus(MainModule module);
+    AddCityComponent plus(AddCityModule module);
 }
