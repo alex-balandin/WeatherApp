@@ -4,6 +4,9 @@ import com.test.weatherapp.data.db.DbManager;
 import com.test.weatherapp.data.network.ApiManager;
 import com.test.weatherapp.model.CityWeather;
 
+import java.util.List;
+
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -30,5 +33,29 @@ public class WeatherDataManagerImpl implements WeatherDataManager {
 
                     return cityWeather;
                 });
+    }
+
+    @Override
+    public Single<CityWeather> getCityWeatherCached(int cityId) {
+        return Single.create(emitter -> {
+            CityWeather cityWeather = dbManager.getCityWeather(cityId);
+            emitter.onSuccess(cityWeather);
+        });
+    }
+
+    @Override
+    public Single<List<CityWeather>> getAllCitiesWeatherCached() {
+        return Single.create(emitter -> {
+            List<CityWeather> cityWeatherList = dbManager.getAllCitiesWeather();
+            emitter.onSuccess(cityWeatherList);
+        });
+    }
+
+    @Override
+    public Completable deleteCityWeatherCache(int cityId) {
+        return Completable.create(emitter -> {
+            dbManager.deleteCityWeather(cityId);
+            emitter.onComplete();
+        });
     }
 }

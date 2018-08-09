@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="action_settings">Settings</string>
+
+    <string name="last_update_time">Last update: %s</string>
+
+    <string name="error_message_general_error">Something went wrong, please try again</string>
+    <string name="error_message_no_internet_connection">No internet connection</string>
+    <string name="error_message_city_not_found">City not found</string>
 </resources>
